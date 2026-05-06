@@ -1,0 +1,139 @@
+{% extends 'dashboard/base.html' %}
+
+{% block dashboard_content %}
+<div class="mb-4 d-flex align-items-center">
+    <a href="{% url 'applicants' %}" class="btn btn-sm btn-light border me-3"><i class="fa-solid fa-arrow-left"></i></a>
+    <h1 class="h4 fw-bold mb-0">Applicant Details</h1>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Profile Card -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm text-center pt-4 pb-3 mb-4">
+            <div class="avatar-circle-lg bg-primary text-white mx-auto mb-3 d-flex align-items-center justify-content-center fw-bold display-6 shadow-sm">
+                {{ app.full_name|make_list|first|upper }}
+            </div>
+            <h5 class="fw-bold mb-1">{{ app.full_name }}</h5>
+            <p class="text-muted mb-3">{{ app.college_name }}</p>
+            
+            <div class="d-flex justify-content-center gap-2 mb-4">
+                <a href="mailto:{{ app.email }}" class="btn btn-outline-primary btn-sm rounded-pill px-3"><i class="fa-solid fa-envelope me-1"></i> Email</a>
+                {% if app.linkedin_url %}
+                <a href="{{ app.linkedin_url }}" target="_blank" class="btn btn-outline-info btn-sm rounded-pill px-3"><i class="fa-brands fa-linkedin me-1"></i> LinkedIn</a>
+                {% endif %}
+            </div>
+
+            <div class="border-top pt-3 px-4 text-start">
+                <div class="mb-2">
+                    <span class="text-muted small fw-bold text-uppercase d-block mb-1">Status</span>
+                    <div class="dropdown w-100">
+                        <button class="btn btn-light border w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown">
+                            <span>
+                                {% if app.status == 'Pending' %}<i class="fa-solid fa-circle text-warning small me-2"></i>Pending
+                                {% elif app.status == 'Selected' %}<i class="fa-solid fa-circle text-success small me-2"></i>Selected
+                                {% else %}<i class="fa-solid fa-circle text-danger small me-2"></i>Rejected{% endif %}
+                            </span>
+                            <i class="fa-solid fa-chevron-down small"></i>
+                        </button>
+                        <ul class="dropdown-menu w-100 border-0 shadow-sm">
+                            <li><a class="dropdown-item" href="{% url 'update_status' app.id 'Pending' %}"><i class="fa-solid fa-circle text-warning small me-2"></i>Pending</a></li>
+                            <li><a class="dropdown-item" href="{% url 'update_status' app.id 'Selected' %}"><i class="fa-solid fa-circle text-success small me-2"></i>Selected</a></li>
+                            <li><a class="dropdown-item" href="{% url 'update_status' app.id 'Rejected' %}"><i class="fa-solid fa-circle text-danger small me-2"></i>Rejected</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Info -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h6 class="fw-bold border-bottom pb-2 mb-3">Contact Information</h6>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fa-solid fa-phone text-muted mt-1 me-3"></i>
+                        <div>
+                            <span class="d-block small text-muted">Phone</span>
+                            <span>{{ app.phone }}</span>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="fa-solid fa-envelope text-muted mt-1 me-3"></i>
+                        <div>
+                            <span class="d-block small text-muted">Email</span>
+                            <span>{{ app.email }}</span>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-start">
+                        <i class="fa-solid fa-calendar text-muted mt-1 me-3"></i>
+                        <div>
+                            <span class="d-block small text-muted">Applied On</span>
+                            <span>{{ app.created_at|date:"F d, Y - h:i A" }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Details -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white border-0 pt-4 pb-2">
+                <h5 class="fw-bold mb-0">Application Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h6 class="text-muted small fw-bold text-uppercase">Skills</h6>
+                    <p class="mb-0">{{ app.skills|linebreaks }}</p>
+                </div>
+                
+                <div class="mb-4">
+                    <h6 class="text-muted small fw-bold text-uppercase">Experience</h6>
+                    {% if app.experience %}
+                        <p class="mb-0 bg-light p-3 rounded-3">{{ app.experience|linebreaks }}</p>
+                    {% else %}
+                        <p class="mb-0 text-muted fst-italic">No experience provided.</p>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-muted small fw-bold text-uppercase">Why join us? (Cover Letter)</h6>
+                    <div class="bg-primary-soft p-4 rounded-3 border-start border-primary border-4">
+                        <i class="fa-solid fa-quote-left fa-2x text-primary opacity-25 mb-2"></i>
+                        <p class="mb-0 fst-italic">{{ app.message|linebreaks }}</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h6 class="text-muted small fw-bold text-uppercase mb-3">Resume Document</h6>
+                    <div class="d-flex align-items-center p-3 border rounded-3 bg-light">
+                        <i class="fa-solid fa-file-pdf fa-2x text-danger me-3"></i>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold text-truncate" style="max-width: 300px;">{{ app.resume.name|slice:"8:" }}</h6>
+                            <small class="text-muted">Uploaded file</small>
+                        </div>
+                        <a href="{{ app.resume.url }}" target="_blank" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
+                            <i class="fa-solid fa-download me-1"></i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="card border-0 shadow-sm border-top border-danger border-3">
+            <div class="card-body d-flex justify-content-between align-items-center p-4">
+                <div>
+                    <h6 class="fw-bold text-danger mb-1">Delete Application</h6>
+                    <p class="text-muted small mb-0">Once deleted, this action cannot be undone.</p>
+                </div>
+                <form method="post" action="{% url 'delete_applicant' app.id %}" class="delete-form">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-outline-danger delete-btn px-4">Delete Record</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

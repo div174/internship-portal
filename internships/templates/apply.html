@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block title %}Apply Now | Amaanitvam{% endblock %}
+
+{% block content %}
+<div class="apply-header pt-5 pb-4 bg-light text-center" style="margin-top: 70px;">
+    <div class="container">
+        <h1 class="display-5 fw-bold outfit-font mb-2" data-aos="fade-down">Join the Team</h1>
+        <p class="text-muted lead" data-aos="fade-up" data-aos-delay="100">Fill out the form below to apply for our internship program.</p>
+    </div>
+</div>
+
+<div class="container my-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            {% if success %}
+            <div class="card border-0 shadow-lg rounded-4 text-center p-5" data-aos="zoom-in">
+                <div class="success-checkmark mb-4">
+                    <div class="check-icon">
+                        <span class="icon-line line-tip"></span>
+                        <span class="icon-line line-long"></span>
+                        <div class="icon-circle"></div>
+                        <div class="icon-fix"></div>
+                    </div>
+                </div>
+                <h2 class="fw-bold mb-3 outfit-font">Application Submitted!</h2>
+                <p class="text-muted mb-4">Thank you for your interest in Amaanitvam Foundation. Our team will review your application and get back to you soon.</p>
+                <a href="{% url 'index' %}" class="btn btn-primary rounded-pill px-4">Back to Home</a>
+            </div>
+            {% else %}
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden" data-aos="fade-up">
+                <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                    <!-- Progress Bar -->
+                    <div class="progress" style="height: 6px; border-radius: 3px;">
+                        <div class="progress-bar bg-primary" id="form-progress" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" enctype="multipart/form-data" id="applicationForm" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Step 1: Personal Info -->
+                        <div class="form-step active" id="step1">
+                            <h4 class="mb-4 fw-bold"><i class="fa-regular fa-user text-primary me-2"></i>Personal Information</h4>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">Full Name *</label>
+                                    {{ form.full_name }}
+                                    <div class="invalid-feedback">Please enter your full name.</div>
+                                    {% if form.full_name.errors %}<div class="text-danger small mt-1">{{ form.full_name.errors }}</div>{% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Email Address *</label>
+                                    {{ form.email }}
+                                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                                    {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Phone Number *</label>
+                                    {{ form.phone }}
+                                    <div class="invalid-feedback">Please enter your phone number.</div>
+                                    {% if form.phone.errors %}<div class="text-danger small mt-1">{{ form.phone.errors }}</div>{% endif %}
+                                </div>
+                            </div>
+                            <div class="text-end mt-4">
+                                <button type="button" class="btn btn-primary rounded-pill px-4 next-step">Next Step <i class="fa-solid fa-arrow-right ms-1"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Academic & Skills -->
+                        <div class="form-step d-none" id="step2">
+                            <h4 class="mb-4 fw-bold"><i class="fa-solid fa-graduation-cap text-primary me-2"></i>Academics & Skills</h4>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">College/University Name *</label>
+                                    {{ form.college_name }}
+                                    <div class="invalid-feedback">Please enter your college name.</div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">Skills *</label>
+                                    {{ form.skills }}
+                                    <div class="form-text">List your key technical and soft skills.</div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">Experience (Optional)</label>
+                                    {{ form.experience }}
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary rounded-pill px-4 prev-step"><i class="fa-solid fa-arrow-left me-1"></i> Back</button>
+                                <button type="button" class="btn btn-primary rounded-pill px-4 next-step">Next Step <i class="fa-solid fa-arrow-right ms-1"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Documents & Submit -->
+                        <div class="form-step d-none" id="step3">
+                            <h4 class="mb-4 fw-bold"><i class="fa-solid fa-file-arrow-up text-primary me-2"></i>Final Details</h4>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">LinkedIn Profile URL</label>
+                                    {{ form.linkedin_url }}
+                                    {% if form.linkedin_url.errors %}<div class="text-danger small mt-1">{{ form.linkedin_url.errors }}</div>{% endif %}
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">Resume/CV * <span class="text-muted fw-normal small">(PDF, DOC, DOCX. Max 5MB)</span></label>
+                                    <div class="file-drop-area border border-2 border-dashed rounded-3 p-4 text-center position-relative transition-all bg-light">
+                                        <i class="fa-solid fa-cloud-arrow-up fa-3x text-muted mb-2"></i>
+                                        <h6 class="mb-1">Drag & drop your file here or click to browse</h6>
+                                        <p class="small text-muted mb-0" id="file-name">No file selected</p>
+                                        {{ form.resume }}
+                                    </div>
+                                    <div class="invalid-feedback" id="resume-feedback">Please upload your resume.</div>
+                                    {% if form.resume.errors %}<div class="text-danger small mt-1 fw-bold">{{ form.resume.errors }}</div>{% endif %}
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-semibold">Why do you want to join us? *</label>
+                                    {{ form.message }}
+                                    <div class="invalid-feedback">Please write a brief message.</div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                                <button type="button" class="btn btn-outline-secondary rounded-pill px-4 prev-step"><i class="fa-solid fa-arrow-left me-1"></i> Back</button>
+                                <button type="submit" class="btn btn-success rounded-pill px-5 shadow-sm position-relative" id="submitBtn">
+                                    <span class="btn-text">Submit Application</span>
+                                    <span class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form Multi-step logic and validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const steps = ['step1', 'step2', 'step3'];
+        let currentStep = 0;
+        const progressBar = document.getElementById('form-progress');
+        
+        // Navigation buttons
+        document.querySelectorAll('.next-step').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if(validateStep(currentStep)) {
+                    document.getElementById(steps[currentStep]).classList.add('d-none');
+                    currentStep++;
+                    document.getElementById(steps[currentStep]).classList.remove('d-none');
+                    document.getElementById(steps[currentStep]).classList.add('animate__animated', 'animate__fadeInRight', 'animate__faster');
+                    updateProgress();
+                }
+            });
+        });
+
+        document.querySelectorAll('.prev-step').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById(steps[currentStep]).classList.add('d-none');
+                currentStep--;
+                document.getElementById(steps[currentStep]).classList.remove('d-none');
+                document.getElementById(steps[currentStep]).classList.add('animate__animated', 'animate__fadeInLeft', 'animate__faster');
+                updateProgress();
+            });
+        });
+
+        function updateProgress() {
+            const percent = ((currentStep + 1) / steps.length) * 100;
+            progressBar.style.width = percent + '%';
+        }
+
+        function validateStep(stepIndex) {
+            const stepDiv = document.getElementById(steps[stepIndex]);
+            const inputs = stepDiv.querySelectorAll('input[required], textarea[required], input.form-control, textarea.form-control');
+            let isValid = true;
+            
+            // Custom basic validation to prevent moving next if essential fields are empty
+            if(stepIndex === 0) {
+                const name = document.getElementById('id_full_name');
+                const email = document.getElementById('id_email');
+                const phone = document.getElementById('id_phone');
+                if(!name.value.trim() || !email.value.trim() || !phone.value.trim()) {
+                    name.classList.add('is-invalid');
+                    email.classList.add('is-invalid');
+                    phone.classList.add('is-invalid');
+                    isValid = false;
+                    Swal.fire({icon: 'warning', title: 'Missing Info', text: 'Please fill all required fields.', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000});
+                } else {
+                    name.classList.remove('is-invalid');
+                    email.classList.remove('is-invalid');
+                    phone.classList.remove('is-invalid');
+                }
+            } else if (stepIndex === 1) {
+                const college = document.getElementById('id_college_name');
+                const skills = document.getElementById('id_skills');
+                if(!college.value.trim() || !skills.value.trim()) {
+                    college.classList.add('is-invalid');
+                    skills.classList.add('is-invalid');
+                    isValid = false;
+                    Swal.fire({icon: 'warning', title: 'Missing Info', text: 'Please fill all required fields.', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000});
+                } else {
+                    college.classList.remove('is-invalid');
+                    skills.classList.remove('is-invalid');
+                }
+            }
+            
+            return isValid;
+        }
+
+        // File Input Styling
+        const fileInput = document.getElementById('id_resume');
+        const fileDropArea = document.querySelector('.file-drop-area');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        if(fileInput && fileDropArea) {
+            // Make input fill area
+            fileInput.style.position = 'absolute';
+            fileInput.style.left = '0';
+            fileInput.style.top = '0';
+            fileInput.style.height = '100%';
+            fileInput.style.width = '100%';
+            fileInput.style.opacity = '0';
+            fileInput.style.cursor = 'pointer';
+
+            fileInput.addEventListener('change', function(e) {
+                if(this.files && this.files.length > 0) {
+                    const fileName = this.files[0].name;
+                    fileNameDisplay.textContent = fileName;
+                    fileNameDisplay.classList.add('text-primary', 'fw-bold');
+                    fileDropArea.classList.add('border-primary', 'bg-primary-soft');
+                } else {
+                    fileNameDisplay.textContent = 'No file selected';
+                    fileNameDisplay.classList.remove('text-primary', 'fw-bold');
+                    fileDropArea.classList.remove('border-primary', 'bg-primary-soft');
+                }
+            });
+
+            // Drag and drop effects
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                fileDropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                fileDropArea.addEventListener(eventName, () => {
+                    fileDropArea.classList.add('border-primary', 'bg-light');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                fileDropArea.addEventListener(eventName, () => {
+                    fileDropArea.classList.remove('border-primary', 'bg-light');
+                }, false);
+            });
+        }
+
+        // Form Submit button loading state
+        const form = document.getElementById('applicationForm');
+        if(form) {
+            form.addEventListener('submit', function(e) {
+                const resume = document.getElementById('id_resume').value;
+                const message = document.getElementById('id_message').value;
+                
+                if(!resume || !message.trim()) {
+                    e.preventDefault();
+                    Swal.fire({icon: 'error', title: 'Incomplete', text: 'Please attach resume and provide a message.', toast: true, position: 'top-end', showConfirmButton: false, timer: 3000});
+                    return;
+                }
+
+                const btn = document.getElementById('submitBtn');
+                btn.querySelector('.btn-text').textContent = 'Submitting...';
+                btn.querySelector('.spinner-border').classList.remove('d-none');
+                btn.disabled = true;
+            });
+        }
+    });
+</script>
+{% endblock %}

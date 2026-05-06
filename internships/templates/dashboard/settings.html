@@ -1,0 +1,71 @@
+{% extends 'dashboard/base.html' %}
+
+{% block dashboard_content %}
+<h1 class="h3 fw-bold mb-4">Platform Settings</h1>
+
+<div class="row g-4">
+    <div class="col-lg-3">
+        <div class="nav flex-column nav-pills custom-nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link active text-start mb-2" data-bs-toggle="pill" data-bs-target="#profile" type="button" role="tab"><i class="fa-solid fa-user me-2"></i> My Profile</button>
+            <button class="nav-link text-start mb-2" data-bs-toggle="pill" data-bs-target="#security" type="button" role="tab"><i class="fa-solid fa-shield-halved me-2"></i> Security</button>
+            <button class="nav-link text-start mb-2" data-bs-toggle="pill" data-bs-target="#notifications" type="button" role="tab"><i class="fa-solid fa-bell me-2"></i> Notifications</button>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <div class="tab-content" id="v-pills-tabContent">
+            <!-- Profile Settings -->
+            <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4">Admin Profile</h5>
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Username</label>
+                                    <input type="text" class="form-control" value="{{ user.username }}" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Email Address</label>
+                                    <input type="email" class="form-control" value="{{ user.email }}">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-3">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Placeholder -->
+            <div class="tab-pane fade" id="security" role="tabpanel">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4">Change Password</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Current Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">New Password</label>
+                                <input type="password" class="form-control">
+                            </div>
+                            <button type="button" class="btn btn-warning mt-3">Update Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Placeholder -->
+            <div class="tab-pane fade" id="notifications" role="tabpanel">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4 text-center py-5">
+                        <i class="fa-solid fa-bell-slash fa-3x text-muted opacity-25 mb-3"></i>
+                        <h5>Notification Settings</h5>
+                        <p class="text-muted">Email alerts configuration is coming soon.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
