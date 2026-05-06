@@ -1,5 +1,6 @@
 # Professional Internship Management Portal
 
+🌍 **Live Demo:** [https://amaanitvam-portal.onrender.com/](https://amaanitvam-portal.onrender.com/)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Django](https://img.shields.io/badge/Django-5.0+-092E20.svg)
 ![MySQL](https://img.shields.io/badge/MySQL-Supported-4479A1.svg)

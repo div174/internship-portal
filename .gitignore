@@ -48,3 +48,6 @@ static_root/
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Superuser credentials
+credentials.txt
